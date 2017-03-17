@@ -153,6 +153,8 @@ void motor() {
   //Find the calibrated Y gForce
   calY = gForceY - Y0;
   //MotorSpeed is dependent on both the angle it is at and it's angular velocity
+  //0.35 is the G force I wanted the motor to reach max speed at
+  //250 comes from the full range of values that the gyroZ could be
   motorSpeed = 48 + 4*calY*(1/0.35) - 8*gyroZ*(1/250);
   //Set a limit for safety
   if(motorSpeed > 57) {
