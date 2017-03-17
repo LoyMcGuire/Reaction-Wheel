@@ -1,6 +1,6 @@
 /*
- * References: MPU 6050: https://github.com/VRomanov89/EEEnthusiast/blob/master/MPU-6050%20Implementation/MPU6050_Implementation/MPU6050_Implementation.ino  2/5/17
- *                       http://www.invensense.com/wp-content/uploads/2015/02/MPU-6000-Register-Map1.pdf   2/5/17
+ * References: MPU 6050: https://github.com/VRomanov89/EEEnthusiast/blob/master/MPU-6050%20Implementation/MPU6050_Implementation/MPU6050_Implementation.ino  2/8/17
+ *                       http://www.invensense.com/wp-content/uploads/2015/02/MPU-6000-Register-Map1.pdf   2/13/17
  *             Motor:    https://www.youtube.com/watch?v=Kp0aSLpxgEE   3/15/17
 */
 #include <Wire.h>   // For I2C communication
@@ -23,6 +23,7 @@ boolean button_pressed;
 //Varibales for setting the motor speed
 Servo myservo;
 int motorSpeed = 48;
+int maxMotorSpeed = 60;
 
 void setup() {
   Serial.begin(9600);   // Initializes to serial port at 9600 bits/sec
@@ -155,10 +156,10 @@ void motor() {
   //MotorSpeed is dependent on both the angle it is at and it's angular velocity
   //0.35 is the G force I wanted the motor to reach max speed at
   //250 comes from the full range of values that the gyroZ could be
-  motorSpeed = 48 + 4*calY*(1/0.35) - 8*gyroZ*(1/250);
+  motorSpeed = 48 + 8*calY*(1/0.35) - 4*gyroZ*(1/250);
   //Set a limit for safety
-  if(motorSpeed > 57) {
-    motorSpeed = 60;
+  if(motorSpeed > maxMotorSpeed) {
+    motorSpeed = maxMotorSpeed;
   }
   myservo.write(motorSpeed);
 }
